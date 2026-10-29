@@ -1,0 +1,40 @@
+line-length = 88
+
+[lint]
+select = [
+    "E", "W", "F",
+    "I",
+    "N",
+    "B",
+    "UP",
+    "C4",
+    "SIM",
+    "RET",
+    "PERF",
+    "ARG",
+    "ERA",
+    "ANN",
+    "D100",
+    "D205",
+    "C901",
+    "PLR0912",
+    "PLR0915",
+]
+ignore = [
+    "ANN002",
+    "ANN003",
+    "ANN202",
+    "ANN401",
+]
+
+# Statements are not lines; 15 statements lands close to the ~15-line limit.
+[lint.pylint]
+max-statements = 15
+max-branches = 6
+
+[lint.mccabe]
+max-complexity = 6
+
+[lint.per-file-ignores]
+"!{scripts,tools}/**" = ["D100"]
+"tests/**" = ["ANN", "ARG"]
