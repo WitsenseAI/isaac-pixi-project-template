@@ -142,6 +142,38 @@ A repository created from the template is an independent copy with its
 own history. Later fixes to the template do not reach it. To pick one up,
 copy the change across by hand.
 
+## Move an existing project to this template
+
+Work on a branch, and run these commands in Git Bash from your project's
+root.
+
+1. Copy the template files. `cp -n` never overwrites a file you already
+   have.
+
+   ```bash
+   T=~/workspace/isaac-pixi-project-template
+   cp -n $T/{pixi.toml,setup.md,CLAUDE.md,STYLE.md,ruff.toml,.pre-commit-config.yaml} .
+   mkdir -p scripts .claude && cp -n $T/scripts/check_install.py scripts/ && cp -n $T/.claude/settings.json .claude/
+   ```
+
+   Merge `.gitattributes` and `.gitignore` from the template by hand. Do
+   not copy `pixi.lock`; step 3 creates a new one.
+2. Edit `pixi.toml`:
+   - Set `name` and `description`.
+   - Add your dependencies with `pixi add <package>` or
+     `pixi add --pypi <package>`. Skip `isaacsim`, `isaaclab` and `torch`.
+   - If your code is an installable package, add it as
+     `my_project = { path = "source/my_project", editable = true }` under
+     `[pypi-dependencies]`.
+   - Add a task for each command you run.
+3. Run `pixi install`, `pixi run check` and your own tasks. Code written
+   for older Isaac versions may need updating, for example `omni.isaac.*`
+   imports that moved to `isaacsim.*`.
+4. Run `pre-commit install` and `ruff check .`, and fix what it reports.
+5. Delete the old environment files, such as `requirements.txt` or
+   `environment.yml`. Run `git add --renormalize .`, then commit,
+   including `pixi.lock`.
+
 ## Changing versions
 
 Edit the version pins in `pixi.toml`, run `pixi lock`, check that
