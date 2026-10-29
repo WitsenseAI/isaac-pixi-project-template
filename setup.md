@@ -80,14 +80,67 @@ ask for license acceptance on first launch. Running the project therefore
 accepts the NVIDIA Isaac Sim license on your behalf. Read that license, and
 remove the setting if you would rather accept it when Isaac Sim asks.
 
-## Start your own project from the template
+## Start a new project from the template
 
-1. Create a new repository from this template, or clone it and point
-   `origin` at your own repository.
-2. Change `name` and `description` in `pixi.toml`.
-3. Put your scripts in `scripts/` and add a task for each one under
-   `[tasks]` in `pixi.toml`.
-4. Commit `pixi.lock`. It is what keeps every machine on the same versions.
+Do steps 1 to 3 above once on each machine. Also set up the Witsense
+development standards once, as described in the README of
+[witsense-dev-standards](https://github.com/WitsenseAI/witsense-dev-standards).
+That installs `ruff` and `pre-commit`.
+
+### 1. Create the repository
+
+On the [template's GitHub page](https://github.com/WitsenseAI/isaac-pixi-project-template),
+click **Use this template**, then **Create a new repository**. Set
+**Owner** to WitsenseAI, name the project, and choose Public or Private.
+
+With the GitHub CLI installed, this command does the same:
+
+```bash
+gh repo create WitsenseAI/<project-name> --template WitsenseAI/isaac-pixi-project-template --private --clone
+```
+
+### 2. Clone and install
+
+```bash
+git clone https://github.com/WitsenseAI/<project-name>.git
+cd <project-name>
+pixi install
+pixi run check
+pre-commit install
+```
+
+`pre-commit install` makes every commit run ruff first. A commit that
+fails the checks is stopped.
+
+### 3. Make it your project
+
+- Change `name` and `description` in `pixi.toml`.
+- Change the title and description in `README.md`.
+- Replace the clone URL in step 4 of this file with your repository's URL.
+
+Commit and push these changes.
+
+### 4. Add code and packages
+
+- Put scripts in `scripts/`. Each one starts with a one-line docstring and
+  the `pixi run` command that launches it. Add a task for each script
+  under `[tasks]` in `pixi.toml`.
+- Add conda packages with `pixi add <package>` and PyPI packages with
+  `pixi add --pypi <package>`. Both update `pixi.toml` and `pixi.lock`.
+  Commit the two files together, because `pixi.lock` is what keeps every
+  machine on the same versions.
+
+### Joining an existing project
+
+Clone the project's repository, then run `pixi install`, `pixi run check`
+and `pre-commit install`. `pixi.lock` gives you the same versions as the
+rest of the team.
+
+### Template updates
+
+A repository created from the template is an independent copy with its
+own history. Later fixes to the template do not reach it. To pick one up,
+copy the change across by hand.
 
 ## Changing versions
 
